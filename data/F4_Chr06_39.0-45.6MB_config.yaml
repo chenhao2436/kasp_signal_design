@@ -1,0 +1,11 @@
+snpindex_path: "/data2/chenh/bsa/F2_3WORKSPACE/bsa_HunchiData/BSA_out/kasp_signal_design/data/joint_vcf_bsa_vcf_for_kasp_sites/F4_BSA_qinben_hunchi_F4_3000000.sites.tsv"
+vcf_path: "/data2/chenh/bsa/VCF_BSA_USE/Canz_REF_VCF/F4_vcf/F4_BSA_qinben_hunchi.vcf.gz"
+reference_fasta: "/data2/chenh/cal_tree/1000+vcf/compare_tree/Canz_ref/Canz.genome.fa"
+parent1_sample: "C3_Parent"
+parent2_sample: "C6_Parent"
+high_pool_sample: "F9fsl_raw"
+low_pool_sample: "F9fsw_raw"
+flank_no_variant_bp: 50
+target_markers_per_side: 2
+initial_rank_limit: 20
+expansion_step_bp: 1000000

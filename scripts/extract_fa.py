@@ -53,7 +53,7 @@ def extract_sequences(input_file, ref_genome_path, output_file):
             marked_seq = f"{left_seq}[{ref}/{alt}]{right_seq}"
             
             # 生成ID
-            variant_id = f"{chrom}:{pos}"
+            variant_id = f"{chrom}-SNP{pos}"
             
             # 写入结果
             f_out.write(f"{variant_id}\t{ref}\t{alt}\t{marked_seq}\n")
