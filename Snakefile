@@ -1,4 +1,4 @@
-configfile: "data/config.yaml"
+configfile: "data/70_Chr11_255900000_260500000_config.yaml"
 
 from pathlib import Path
 import csv
@@ -8,7 +8,7 @@ SCRIPT_DIR = Path("scripts")
 TEMP_DIR = Path("temp")
 RESULTS_DIR = Path("results")
 RULE_ENV = "data/kasp_rule_env.yaml"
-REGIONS_FILE = config.get("regions_file", "data/regions.tsv")
+REGIONS_FILE = config.get("regions_file", "data/70_Chr11_255900000_260500000_regions.tsv")
 
 
 def load_regions(path: str) -> dict[str, str]:
