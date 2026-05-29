@@ -102,10 +102,28 @@ def parse_region(region_text: str) -> tuple[str, int, int]:
     chrom = match.group("chrom").strip()
     start_value = float(match.group("start"))
     end_value = float(match.group("end"))
-    unit = (match.group("unit") or "MB").upper()
+    
+    raw_unit = match.group("unit")
+    if raw_unit is None:
+        # 智能推断：如果数值很大，说明已经是 bp，不需要再乘以 1,000,000 (Mb)
+        if start_value > 10000 or end_value > 100000:
+            unit = "BP"
+        else:
+            unit = "MB"
+    else:
+        unit = raw_unit.upper()
+
     multiplier = ONE_MB if unit in {"MB", "M"} else 1
     start_bp = int(round(start_value * multiplier))
     end_bp = int(round(end_value * multiplier))
+
+    # 安全检查：防止因单位解析错误产生海量区间导致内存溢出和无限循环
+    if end_bp > 50_000_000_000:
+        raise ValueError(
+            f"解析后的区间终点超过了 50 Gb ({end_bp} bp)，这通常是因为区间使用了 bp 单位（如 {region_text}）但未指定 'bp' 后缀，"
+            f"导致被错误地默认为 Mb 并乘以 1,000,000。请在区间后显式加上 'bp'（如 {region_text}bp）或使用 Mb 单位。"
+        )
+
     if start_bp >= end_bp:
         raise ValueError(f"区间起点必须小于终点: {region_text}")
     if end_bp - start_bp < 2 * ONE_MB:
@@ -207,6 +225,8 @@ def expansion_window_end(window: Window, expansion_level: int, expansion_step_bp
 
 
 def collect_candidates(snpindex_path: Path, windows: Sequence[Window], expansion_step_bp: int) -> list[Candidate]:
+    import bisect
+
     rows = iter_rows(snpindex_path)
     try:
         first_row = next(rows)
@@ -218,6 +238,7 @@ def collect_candidates(snpindex_path: Path, windows: Sequence[Window], expansion
 
     by_side: dict[str, list[tuple[int, float, int]]] = {window.side: [] for window in windows}
     target_chrom = windows[0].chrom
+    window_starts = [w.start for w in windows]
 
     for row in data_rows:
         if max(chrom_idx, pos_idx, delta_idx) >= len(row):
@@ -232,10 +253,13 @@ def collect_candidates(snpindex_path: Path, windows: Sequence[Window], expansion
             continue
         if math.isnan(delta) or delta <= 0:
             continue
-        for window in windows:
+        
+        # 使用二分查找在 O(log M) 时间内快速找到对应的 window，避免在有大量 window 时产生 O(M) 线性遍历导致的严重卡死
+        idx = bisect.bisect_right(window_starts, pos) - 1
+        if idx >= 0:
+            window = windows[idx]
             if window.start <= pos <= window.end:
                 by_side[window.side].append((pos, delta, calculate_expansion_level(window, pos, expansion_step_bp)))
-                break
 
     candidates: list[Candidate] = []
     for window in windows:
