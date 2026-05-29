@@ -1,4 +1,4 @@
-snpindex_path: "/data2/chenh/bsa/F2_3WORKSPACE/bsa_HunchiData/BSA_out/output/hunchi_and_qinben.prepared_single_sample.genome.joint_70_3000000/hunchi_and_qinben.prepared_single_sample.genome.joint_70_3000000/hunchi_and_qinben.prepared_single_sample.genome.joint_70_3000000.sites.tsv"
+snpindex_path: "temp/chr11_sites.tsv"
 vcf_path: "/data2/chenh/bsa/VCF_BSA_USE/Canz_REF_VCF/F2_3_vcf/hunchi_and_qinben.prepared_single_sample.cleaned.genome.joint.vcf.gz"
 reference_fasta: "/data2/chenh/cal_tree/1000+vcf/compare_tree/Canz_ref/Canz.genome.fa"
 parent1_sample: "C3_Parent"
