@@ -1,0 +1,25 @@
+# Copy this file to a project-specific configuration YAML and edit all paths/sample names.
+# Do not commit private or server-specific paths.
+
+snpindex_path: "/path/to/BSA/plot.tsv"
+vcf_path: "/path/to/joint.vcf.gz"
+reference_fasta: "/path/to/reference.fa"
+
+# These four names must match sample IDs in the VCF header exactly.
+parent1_sample: "PARENT_A"
+parent2_sample: "PARENT_B"
+high_pool_sample: "HIGH_BULK"
+low_pool_sample: "LOW_BULK"
+
+# Candidate filtering and selection
+flank_no_variant_bp: 50
+target_markers_per_side: 2
+initial_rank_limit: 20
+expansion_step_bp: 1000000
+
+# flank = prioritize candidates near both ends of the target interval
+# bin = select candidates from fixed-size bins across the interval
+selection_mode: "flank"
+bin_size_bp: 1000000
+
+regions_file: "data/regions.example.tsv"
