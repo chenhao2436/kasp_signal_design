@@ -128,9 +128,15 @@ The current `Snakefile` loads this configuration by default:
 data/70_Chr11_255900000_260500000_config.yaml
 ```
 
-Edit the file before running. Update the SNP-index path, VCF path, reference FASTA, sample names, and target regions.
+The repository provides reusable templates: `data/config.example.yaml` and `data/regions.example.tsv`. Copy them to project-specific files (for example, `data/my_project.yaml`) and update `snpindex_path`, `vcf_path`, `reference_fasta`, the four sample names, and `regions_file`. The regions TSV must contain `region_id` and `region` columns.
 
-To use another region configuration, update the `configfile` directive at the top of the Snakefile and confirm that its regions TSV exists.
+Before the first run, point the `configfile` directive at the top of `Snakefile` to your project configuration:
+
+```python
+configfile: "data/my_project.yaml"
+```
+
+The default Chr11 YAML is retained from the original research setup and should not be treated as a generic configuration for other projects.
 
 ### 2. Perform a dry run
 
