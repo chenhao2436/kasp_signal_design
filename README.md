@@ -126,9 +126,15 @@ SNP-index 输入表应包含 `CHROM`、`POS`、`DELTA_SNP_INDEX` 等列；无表
 data/70_Chr11_255900000_260500000_config.yaml
 ```
 
-请先打开该文件，修改 `snpindex_path`、`vcf_path`、`reference_fasta` 和样本名等参数。区间列表由配置中的 `regions_file` 指定。
+仓库提供通用模板：`data/config.example.yaml` 和 `data/regions.example.tsv`。建议复制一份项目专用配置，例如 `data/my_project.yaml`，然后修改 `snpindex_path`、`vcf_path`、`reference_fasta`、四个样本名和 `regions_file`。`regions_file` 指向的 TSV 必须包含 `region_id` 和 `region` 两列。
 
-如需切换另一套区间配置，请同步修改 `Snakefile` 的 `configfile` 指向目标 YAML 文件，并确认相应 regions TSV 存在。
+首次使用请将 `Snakefile` 顶部的 `configfile` 指令改为你的项目配置，例如：
+
+```python
+configfile: "data/my_project.yaml"
+```
+
+当前 Snakefile 默认加载的 Chr11 YAML 是原研究环境配置，不应直接当作其他项目的通用默认值。
 
 ### 2. 先做 dry-run
 
