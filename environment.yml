@@ -1,0 +1,6 @@
+name: kasp-snakemake
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - snakemake
